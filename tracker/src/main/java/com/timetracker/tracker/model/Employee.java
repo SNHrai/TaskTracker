@@ -24,22 +24,26 @@ import lombok.ToString;
 @Getter
 @ToString
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "EMP_MASTER")
 public class Employee implements Serializable{
     @Id
+    @Column(name = "EMP_ID")
     private long id;
   
-    @Column(name = "EMPLOYEENAME")
+    @Column(name = "EMP_NAME")
     private String employeeName;
   
-    @Column(name = "EMPROLE")
+    @Column(name = "EMP_ROLE")
     private String employeeRole;
 
-    @Column(name = "EMPMOBILE")
+    @Column(name = "EMP_MOBILE")
     private Long mobileNumber;
 
     @Column(name = "EMP_VERTICLE_HEAD_ID")
     private long verticleHeadId;
+
+    @Column(name = "PASSWORD")
+    private String password;
 
     @OneToMany(targetEntity = TaskTracker.class, mappedBy = "id", orphanRemoval = false, fetch = FetchType.LAZY)
     private Collection<TaskTracker> taskTrackers = new ArrayList<TaskTracker>();

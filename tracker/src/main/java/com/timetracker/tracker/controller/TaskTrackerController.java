@@ -7,7 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.timetracker.tracker.exception.ResourceNotFoundException;
@@ -57,7 +56,7 @@ public class TaskTrackerController {
         @RequestBody TaskTracker taskTracker) {
         TaskTracker tracker = employeeRepository.findById(employeeId).map(employee -> {
         taskTracker.setEmployee(employee);
-        taskTracker.setDate(new Date());
+        // taskTracker.setDate(new Date());
         return trackerRepository.save(taskTracker);
     }).orElseThrow(() -> new ResourceNotFoundException("Not found employee with id = " + employeeId));
 
@@ -84,10 +83,10 @@ public class TaskTrackerController {
     // }
 
     @GetMapping("/tracker/{date}")
-    public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) throws ParseException{
+    public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "") Date date) throws ParseException{
       // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
       //date = Calendar.getInstance().getTime();  
-      DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+      DateFormat dateFormat = new SimpleDateFormat(""); 
      
       //dateFormat.format(date); 
       EntityManager manager = managerFactory.createEntityManager();
@@ -108,6 +107,29 @@ public class TaskTrackerController {
 
     }
     
+    // @GetMapping("/tracker/{date}")
+    // public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "dd-MON-yy") Date date) throws ParseException{
+    //   // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+    //   //date = Calendar.getInstance().getTime();  
+    //   DateFormat dateFormat = new SimpleDateFormat("dd-MON-yy"); 
+     
+    //   //dateFormat.format(date); 
+    //   EntityManager manager = managerFactory.createEntityManager();
+    //   Query query = manager.createQuery("select " +"e.employeeName, "+ "t.taskDetails from Employee e, " + "TaskTracker t where e.id = t.employee "  + "and t.date = '" +   dateFormat.format(date) + "%" +"'");
+    //   // if(employeeRepository.findByVerticleHeadId(verticleHeadId).equals(null)){
+    //   //   throw new ResourceNotFoundException("Not found with head ID  : " + verticleHeadId);
+    //   // }
+    //   List<TaskTracker> trackers = (List<TaskTracker>)query.getResultList();
+    //   manager.close();
 
+      
+     
+       
+    //   // SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd");  
+    //   // formatter6.; 
+    //  return new ResponseEntity<>(trackers, HttpStatus.OK);
+
+
+    // }
     
 }

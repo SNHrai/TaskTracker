@@ -17,10 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "TASKTRACKER")
+@Table(name = "TASK_TRACKER")
 public class TaskTracker implements Serializable{
     
     @Id
@@ -40,16 +38,16 @@ public class TaskTracker implements Serializable{
     @Column(name = "TASK_NUMBER",nullable = false, updatable = false)
 	private Long id;
 
-    
-    
-    @Column(name = "date")
-    private Date date;
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "DATE_TIME")
+    private Date date = new Date(System.currentTimeMillis());
 
-    @Column(name = "TASK_DETAILS")
+    @Column(name = "TASK_DETAILS", length = 5000)
     private String taskDetails;
   
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "employeeid", nullable = false)
+    @JoinColumn(name = "EMP_ID", nullable = false)
     @JsonIgnore
     private Employee employee;
 
