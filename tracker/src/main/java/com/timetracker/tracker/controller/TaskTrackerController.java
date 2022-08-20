@@ -6,8 +6,6 @@ package com.timetracker.tracker.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -56,7 +54,7 @@ public class TaskTrackerController {
         @RequestBody TaskTracker taskTracker) {
         TaskTracker tracker = employeeRepository.findById(employeeId).map(employee -> {
         taskTracker.setEmployee(employee);
-        // taskTracker.setDate(new Date());
+        taskTracker.setDate(new Date());
         return trackerRepository.save(taskTracker);
     }).orElseThrow(() -> new ResourceNotFoundException("Not found employee with id = " + employeeId));
 
@@ -83,14 +81,42 @@ public class TaskTrackerController {
     // }
 
     @GetMapping("/tracker/{date}")
-    public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "") Date date) throws ParseException{
+    public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "dd-MMM-yy") Date date) throws ParseException{
       // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+      DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy"); 
       //date = Calendar.getInstance().getTime();  
-      DateFormat dateFormat = new SimpleDateFormat(""); 
      
       //dateFormat.format(date); 
       EntityManager manager = managerFactory.createEntityManager();
-      Query query = manager.createQuery("select " +"e.employeeName, "+ "t.taskDetails from Employee e, " + "TaskTracker t where e.id = t.employee "  + "and DATE(t.date) = '" +   dateFormat.format(date) + "%" +"'");
+      Query query = manager.createQuery("select " +"e.employeeName, "+ "t.taskDetails from Employee e, " + "TaskTracker t where e.id = t.employee "  + "and to_char(t.date, 'dd-Mon-yy') = '" +  dateFormat.format(date) +"'");
+      // if(employeeRepository.findByVerticleHeadId(verticleHeadId).equals(null)){
+      //   throw new ResourceNotFoundException("Not found with head ID  : " + verticleHeadId);
+      // }
+      List<TaskTracker> trackers = (List<TaskTracker>)query.getResultList();
+      manager.close();
+
+      
+     
+       
+      // SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MM-dd");  
+      // formatter6.; 
+     return new ResponseEntity<>(trackers, HttpStatus.OK);
+
+
+    }
+
+
+
+
+    @GetMapping("/tracker/currentdate")
+    public ResponseEntity<List<TaskTracker>> getTaskBycurrentDate() throws ParseException{
+      // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+      DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy"); 
+      //date = Calendar.getInstance().getTime();  
+     
+      //dateFormat.format(date); 
+      EntityManager manager = managerFactory.createEntityManager();
+      Query query = manager.createQuery("select " +"e.employeeName, "+ "t.taskDetails from Employee e, " + "TaskTracker t where e.id = t.employee "  + "and to_char(t.date, 'dd-Mon-yy') = to_char(sysdate, 'dd-Mon-yy')");
       // if(employeeRepository.findByVerticleHeadId(verticleHeadId).equals(null)){
       //   throw new ResourceNotFoundException("Not found with head ID  : " + verticleHeadId);
       // }
