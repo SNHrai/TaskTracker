@@ -47,7 +47,7 @@ public class TaskTracker implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "employeeid", nullable = false)
     @JsonIgnore
-    private Employee employee;
+    private User user;
 
 
 
@@ -66,9 +66,9 @@ public class TaskTracker implements Serializable{
 
 
 
-    public TaskTracker(String taskDetails, Employee employee) {
+    public TaskTracker(String taskDetails, User user) {
         this.taskDetails = taskDetails;
-        this.employee = employee;
+        this.user = user;
     } 
     
     

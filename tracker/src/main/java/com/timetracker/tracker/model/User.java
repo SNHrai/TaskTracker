@@ -25,13 +25,13 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "EMP_MASTER")
-public class Employee implements Serializable{
+public class User implements Serializable{
     @Id
     @Column(name = "EMP_ID")
     private long id;
   
     @Column(name = "EMP_NAME")
-    private String employeeName;
+    private String userName;
   
     @Column(name = "EMP_ROLE")
     private String employeeRole;
@@ -47,4 +47,21 @@ public class Employee implements Serializable{
 
     @OneToMany(targetEntity = TaskTracker.class, mappedBy = "id", orphanRemoval = false, fetch = FetchType.LAZY)
     private Collection<TaskTracker> taskTrackers = new ArrayList<TaskTracker>();
+
+    public User(String employeeName) {
+        this.userName = employeeName;
+    }
+
+    public User(long id, String employeeName) {
+        this.id = id;
+        this.userName = employeeName;
+    }
+
+    public User(long id, String employeeName, String employeeRole) {
+        this.id = id;
+        this.userName = employeeName;
+        this.employeeRole = employeeRole;
+    }
+    
+    
 }
