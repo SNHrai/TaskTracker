@@ -36,7 +36,7 @@ public class UserController {
         this.managerFactory = managerFactory;
     }
     
-    @GetMapping("/dashboard")
+    @GetMapping("/")
     public String getMsg(){
         return "Welcome User";
  }

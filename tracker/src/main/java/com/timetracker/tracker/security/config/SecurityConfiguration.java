@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -30,6 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     private  UserDetailsService userDetailsService;
 
 
+@Bean
+@Override
+public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+}
     
 
     @Bean
@@ -57,11 +63,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
         http
             .csrf().disable()
             .authorizeRequests()
+            .antMatchers("/api/**").permitAll()
             .antMatchers("/task/**").hasRole("MANAGER")
-            .antMatchers("/user/**").hasAnyRole("EMPLOYEE","MANAGER")
+            .antMatchers("/user/").hasAnyRole("EMPLOYEE","MANAGER")
             .anyRequest()
             .authenticated().and()
-            .httpBasic(); 
+            .formLogin();
+            
     }
 
     
@@ -70,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     //     auth.userDetailsService(userDetailsService);
     // }
 
+   
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
                 auth.authenticationProvider(daoAuthenticationProvider());
