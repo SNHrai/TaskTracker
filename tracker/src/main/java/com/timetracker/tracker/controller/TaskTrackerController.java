@@ -47,16 +47,6 @@ public class TaskTrackerController {
         this.managerFactory = managerFactory;
     }
 
-    @GetMapping("/hello")
-    public String greeting(){
-        return "hello welcome";
-    }
-
-    @GetMapping("/dashboard")
-    public String dashBoard(){
-        return "Admin";
-    }
-
 //   @PostMapping("/tasktracker/{employeeId}")
 //     public ResponseEntity<TaskTracker> createTask(@PathVariable(value = "employeeId") Long employeeId, @RequestBody TaskTracker taskTracker) {
 //         TaskTracker tracker = userRepository.findById(employeeId).map(user -> {
@@ -68,7 +58,18 @@ public class TaskTrackerController {
 //        return new ResponseEntity<>(tracker, HttpStatus.CREATED);
 //  }
 
-    @GetMapping("tasktracker/{verticleHeadId}")
+// @PostMapping("enterTask/{employeeId}")
+// public ResponseEntity<TaskTracker> createTask(@PathVariable(value = "employeeId") Long employeeId, @RequestBody TaskTracker taskTracker) {
+//     TaskTracker tracker = userRepository.findById(employeeId).map(user -> {
+//     taskTracker.setUser(user);
+//     taskTracker.setDate(new Date());
+//     return trackerRepository.save(taskTracker);
+// }).orElseThrow(() -> new ResourceNotFoundException("Not found employee with id = " + employeeId));
+
+//    return new ResponseEntity<>(tracker, HttpStatus.CREATED);
+// }
+
+    @GetMapping("/headId/{verticleHeadId}")
     public ResponseEntity<List<TaskTracker>> findAllByVerticleHeadId(@PathVariable(value = "verticleHeadId") Long verticleHeadId){
         EntityManager manager = managerFactory.createEntityManager();
         Query query = manager.createQuery("select " +"e.userName, "+ "t.taskDetails from User e, " + "TaskTracker t where e.id = t.user "  + "and e.verticleHeadId = "+verticleHeadId+"");
@@ -80,7 +81,7 @@ public class TaskTrackerController {
        return new ResponseEntity<>(trackers, HttpStatus.OK);
     }
 
-    @GetMapping("/tracker/{date}")
+    @GetMapping("/bydate/{date}")
     public ResponseEntity<List<TaskTracker>> findAllByDate(@PathVariable(value = "date") @DateTimeFormat(pattern = "dd-MMM-yy") Date date) throws ParseException{
       // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
       DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy"); 
