@@ -23,8 +23,20 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 }
 .button{
-  padding: 10rem 20px 10px 20px;
+      /* padding: 14rem 30px 38px 40px; */
+      position: absolute;
+    left: 90%;
+    /* width: 160px; */
+    /* size: 88px; */
+    /* height: 20px; */
+    bottom: 560px;
+    margin-bottom: -85px;
  
+}
+@media(max-width:100px){
+  .button{
+     margin-right: 100%;
+  }
 }
 
 </style>
@@ -40,15 +52,10 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
   
    
 
-
+  <!-- <form method="post" th:action="@{/users/}" th:object="${TaskTracker}" class="col card p-3 mb-5"> -->
+    <label class="label" style="padding: 30px ; margin-left: 42px;">Enter EmployeeId : </label>
+                      <input type="text" >
     <div class="container">
-        <!-- <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h3 style="color: black; padding-left: 180px;"> Employee log's in </h3>
-                    </div>
-                 </div>
-            </div> -->
             <div class="row">
                 <div class="col-xs-12">
                     <div class="mb-3">
@@ -58,14 +65,17 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
                         <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                       </div>
-                      <button class="btn btn-primary" onclick="submitTask()">Submit</button>
-                </div>
-        </div>
+                      <button class="btn btn-outline-primary" onclick="submitTask()">Submit</button>
 
+                    </div>
+                  </div>
+                  
+                
        <form  class="button" form-method="post" th:action="@{/logout}">
-          <button class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">Logout</button>
+          <button class="btn btn-outline-danger" type="submit">Logout</button>
        </form>
     </div>
+  <!-- </form> -->
     <script>
         function submitTask() {
           alert("Task Submited Successfully...");

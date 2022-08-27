@@ -23,7 +23,7 @@ public class LoginController {
 
 
    @PostMapping("/login")
-   public ResponseEntity<?> login(@RequestBody AuthCredentialRequest request){
+   public Authentication login(@RequestBody AuthCredentialRequest request){
        Authentication authentication = authenticationManager 
        .authenticate(
         new UsernamePasswordAuthenticationToken(
@@ -31,7 +31,7 @@ public class LoginController {
             )
        );
         
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return  authentication;
    }
 
   

@@ -65,18 +65,20 @@ public AuthenticationManager authenticationManagerBean() throws Exception {
         http
             .csrf().disable()
             .authorizeRequests()
+            .antMatchers("/login").permitAll()
             .antMatchers("/signin").permitAll()
             .antMatchers("/employee").hasAnyRole("EMPLOYEE","MANAGER")
             .antMatchers("/user/**").hasAnyRole("EMPLOYEE","MANAGER")
             .antMatchers("/task/**").hasRole("MANAGER")
             .anyRequest()
             .authenticated().and()
-            .formLogin()
-            .loginPage("/signin")
-            .loginProcessingUrl("/login")
-            .successHandler(loginSuccessHandler)
-            .and()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/signin");
+            .httpBasic();
+            // .formLogin()
+            // .loginPage("/signin")
+            // .loginProcessingUrl("/login")
+            // .successHandler(loginSuccessHandler)
+            // .and()
+            // .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/signin");
             
     }
 

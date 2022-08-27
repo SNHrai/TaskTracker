@@ -39,7 +39,7 @@ public class UserController {
 
     
 
-    @PostMapping("/tasktracker/{employeeId}")
+    @PostMapping("/{employeeId}")
     public ResponseEntity<TaskTracker> createTask(@PathVariable(value = "employeeId") Long employeeId, @RequestBody TaskTracker taskTracker) {
         TaskTracker tracker = userRepository.findById(employeeId).map(user -> {
         taskTracker.setUser(user);
