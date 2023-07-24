@@ -14,7 +14,7 @@ import com.timetracker.tracker.repository.UserRepository;
 public class MyUserDetailsService implements UserDetailsService{
 
     private final static String USER_NOT_FOUND_MSG =
-    "user with email %s not found";
+    "user not found";
 
 
    private UserRepository repository;
