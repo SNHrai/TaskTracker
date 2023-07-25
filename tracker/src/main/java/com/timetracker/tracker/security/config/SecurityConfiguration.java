@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,12 +28,24 @@ public class SecurityConfiguration {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
+
     @Autowired
     private CustomLoginSuccessHandler loginSuccessHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return this.userDetailsService;
+    }
+    // @Bean
+    // public PasswordEncoder encoder() {
+    // return new BCryptPasswordEncoder();
+    // }
+
+    @SuppressWarnings("deprecation")
+    @Bean
+    public static NoOpPasswordEncoder passwordEncoder() {
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
@@ -40,8 +55,8 @@ public class SecurityConfiguration {
                 .authorizeRequests()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/signin/**").permitAll()
-                .antMatchers("/employee").hasAnyRole("EMPLOYEE","MANAGER")
-                .antMatchers("/user/**").hasAnyRole("EMPLOYEE","MANAGER")
+                .antMatchers("/employee").hasAnyRole("EMPLOYEE", "MANAGER")
+                .antMatchers("/user/**").hasAnyRole("EMPLOYEE", "MANAGER")
                 .antMatchers("/task/**").hasRole("MANAGER")
                 // .anonymous()
                 .anyRequest()
@@ -56,15 +71,25 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService());
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
+    // @Bean
+    // public DaoAuthenticationProvider daoAuthenticationProvider() {
+    // DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    // provider.setUserDetailsService(userDetailsService());
+    // provider.setPasswordEncoder(passwordEncoder());
+    // return provider;
+    // }
+    
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+         authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
+
 }

@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -25,14 +24,14 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "EMP_MASTER")
-public class User implements Serializable{
+public class User implements Serializable {
     @Id
     @Column(name = "EMP_ID")
     private long id;
-  
+
     @Column(name = "EMP_NAME")
     private String userName;
-  
+
     @Column(name = "EMP_ROLE")
     private String employeeRole;
 
@@ -62,6 +61,5 @@ public class User implements Serializable{
         this.userName = employeeName;
         this.employeeRole = employeeRole;
     }
-    
-    
+
 }
